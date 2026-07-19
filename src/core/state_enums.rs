@@ -1,4 +1,4 @@
-
+use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone)]
 pub enum TodoItemState {
     Open,
@@ -7,7 +7,7 @@ pub enum TodoItemState {
 }
 
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum PriorityState {
     Height,
     Middle,

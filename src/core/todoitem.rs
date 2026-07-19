@@ -1,21 +1,22 @@
-use chrono::prelude::{Utc};
-use crate::core::state_enums::{TodoItemState, PriorityState};
-
+use chrono::{DateTime, NaiveDateTime, prelude::Utc};
+use crate::core::state_enums::{PriorityState};
+use serde::{Deserialize, Serialize, };
 
 
 /// 
 /// Allgemeine überlegungen: manchmal ergeben sich unter den Todo abhängigkeiten untereinander, vielleicht ist es nützlich dies zu verknüpfen.
 /// 
 
-#[derive(Clone, Debug)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct TodoItem {
     name:String,
     timestamp:chrono::DateTime<Utc>,
     deadline:Option<chrono::DateTime<Utc>>,
     forward:Option<chrono::DateTime<Utc>>, // Das soll der vorlauf sein, ich möchte die Todos so steuern können, dass sie erst zu einer bestimmten Zeit aufploppen zb 3 Tage vorlauf
-    state: TodoItemState,
+    state: bool,
     priority: PriorityState,
-    description:Option<String>
+    description:Option<String>,
+    expand:bool,
     //dependency = mache Todo können auch in mehrer aufgeteilt werden. daraus ergeben sich abhängigkeiten wenn z.B. Todo A eine blocker hat aber Todo B von A abhängt ist B auch geblockt.
 }
 
@@ -25,14 +26,19 @@ impl TodoItem {
             timestamp:Utc::now(),
             deadline:None,
             forward:None,
-            state:TodoItemState::Open,
+            state:false,
             priority:PriorityState::Low,
             description:None,
+            expand:false,
         }
     }
 
     pub fn name(&self) -> &String {
         &self.name
+    }
+
+    pub fn expand(&self) -> bool {
+        self.expand
     }
 
     pub fn timestamp(&self) -> &chrono::DateTime<Utc> {
@@ -52,26 +58,58 @@ impl TodoItem {
             None => &None,
         }
     } 
+    
+    pub fn deadline_as_string(&self) -> String {
 
-    pub fn state(&self) -> &TodoItemState {
-        &self.state
+        match &self.deadline {
+            Some(_) => format!("{}", &self.deadline.unwrap().format("%d.%m.%y %H:%M")),
+            None => format!("None"),
+        }
+
     }
 
-    pub fn set_state(&mut self, state:&str) -> &mut Self{
-        match state {
-            "open" => self.state = TodoItemState::Open,
-            "closed" => self.state = TodoItemState::Closed,
-            "blocked" => self.state = TodoItemState::Blocked,
-            _ => (),
+    pub fn set_deadline(&mut self, time:String) {
+        let fmt = "%d.%m.%y %H:%M";
+        let naive: NaiveDateTime = NaiveDateTime::parse_from_str(&time, fmt).expect("");
+        self.deadline =  Some(DateTime::<Utc>::from_naive_utc_and_offset(naive, Utc));
+    }
+
+    pub fn state(&self) -> bool {
+        self.state
+    }
+
+    pub fn description(& self) -> String {
+        match &self.description {
+            Some(value) => value.trim().to_string(),
+            _ => "".trim().to_string(),
         }
-        self
+    }
+
+    pub fn set_expand(&mut self, state: bool) {
+        self.expand = state;
+    } 
+
+    pub fn priority(&self) -> String {
+        match self.priority {
+            PriorityState::Height => "Hoch".to_string(),
+            PriorityState::Middle => "Mittel".to_string(),
+            PriorityState::Low => "Gering".to_string(),
+        }
+    }
+    pub fn set_description(&mut self, text:String) {
+        self.description = Some(text);
+    }
+
+    pub fn set_state(&mut self, state:bool) {
+        self.state = state;
     }
 
     pub fn set_priority_state(&mut self, state:&str) -> &mut Self {
-        match state {
-            "height" => self.priority = PriorityState::Height, 
-            "middle" => self.priority = PriorityState::Middle,
-            "low" => self.priority = PriorityState::Low,
+
+        match state.to_lowercase().as_str() {
+            "height" | "hoch" => self.priority = PriorityState::Height, 
+            "middle" | "mittel" => self.priority = PriorityState::Middle,
+            "low" | "gering" => self.priority = PriorityState::Low,
             _ => (),
         }   
         self

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 21,
+    "list": {
+      "20": {
+        "name": "Neuer Eintrag.",
+        "timestamp": "2026-07-19T09:14:41.129759748Z",
+        "deadline": null,
+        "forward": null,
+        "state": false,
+        "priority": "Low",
+        "description": "",
+        "expand": false
+      },
+      "21": {
+        "name": "Neuer Eintrag.",
+        "timestamp": "2026-07-19T09:15:05.963522271Z",
+        "deadline": null,
+        "forward": null,
+        "state": false,
+        "priority": "Low",
+        "description": "",
+        "expand": false
+      },
+      "1": {
+        "name": "Todos hinzufügen implementieren.",
+        "timestamp": "2026-07-19T08:23:26.658237097Z",
+        "deadline": null,
+        "forward": null,
+        "state": false,
+        "priority": "Height",
+        "description": "",
+        "expand": false
+      },
+      "4": {
+        "name": "Formatierung fixen",
+        "timestamp": "2026-07-19T08:28:14.600473158Z",
+        "deadline": null,
+        "forward": null,
+        "state": false,
+        "priority": "Height",
+        "description": "",
+        "expand": false
+      }
+    }
+  }
+]
