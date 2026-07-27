@@ -1,47 +1,64 @@
 [
   {
-    "id": 21,
-    "list": {
-      "20": {
-        "name": "Neuer Eintrag.",
-        "timestamp": "2026-07-19T09:14:41.129759748Z",
-        "deadline": null,
-        "forward": null,
-        "state": false,
-        "priority": "Low",
-        "description": "",
-        "expand": false
-      },
-      "21": {
-        "name": "Neuer Eintrag.",
-        "timestamp": "2026-07-19T09:15:05.963522271Z",
-        "deadline": null,
-        "forward": null,
-        "state": false,
-        "priority": "Low",
-        "description": "",
-        "expand": false
-      },
-      "1": {
-        "name": "Todos hinzufügen implementieren.",
-        "timestamp": "2026-07-19T08:23:26.658237097Z",
-        "deadline": null,
-        "forward": null,
-        "state": false,
-        "priority": "Height",
-        "description": "",
-        "expand": false
-      },
-      "4": {
-        "name": "Formatierung fixen",
-        "timestamp": "2026-07-19T08:28:14.600473158Z",
-        "deadline": null,
-        "forward": null,
-        "state": false,
-        "priority": "Height",
-        "description": "",
-        "expand": false
-      }
-    }
+    "id": 29,
+    "list": [
+      [
+        28,
+        {
+          "name": "crebtrehttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+          "timestamp": "2026-07-26T10:58:43.513942415Z",
+          "deadline": null,
+          "forward": null,
+          "state": false,
+          "priority": "High",
+          "description": "",
+          "expand": false,
+          "delete": false
+        }
+      ],
+      [
+        26,
+        {
+          "name": "rgvtvptolp",
+          "timestamp": "2026-07-26T10:39:51.157793632Z",
+          "deadline": null,
+          "forward": null,
+          "state": false,
+          "priority": "Middle",
+          "description": "",
+          "expand": false,
+          "delete": false
+        }
+      ],
+      [
+        29,
+        {
+          "name": "freggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+          "timestamp": "2026-07-26T10:59:00.952695986Z",
+          "deadline": null,
+          "forward": null,
+          "state": false,
+          "priority": "Middle",
+          "description": "",
+          "expand": false,
+          "delete": false
+        }
+      ],
+      [
+        23,
+        {
+          "name": "1",
+          "timestamp": "2026-07-26T08:47:40.323355892Z",
+          "deadline": null,
+          "forward": null,
+          "state": false,
+          "priority": "Low",
+          "description": "",
+          "expand": false,
+          "delete": false
+        }
+      ]
+    ],
+    "path": "./config_files/todolist.json"
   }
 ]

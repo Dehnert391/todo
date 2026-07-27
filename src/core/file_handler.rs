@@ -7,7 +7,6 @@ use std::io::{BufReader, Write};
 
 ///
 /// zur Erstellung einer JSON-Datei hier wird ein bestimmter Typ einer Struct an die Datei gebunden.
-#[derive(Debug)]
 pub struct FileHandler <T> {
     path: String,
     input_type: std::marker::PhantomData<T>,
@@ -17,14 +16,14 @@ pub struct FileHandler <T> {
 impl <T: serde::Serialize + for<'de> serde::Deserialize<'de>> FileHandler<T> {
     /// Erstellt eine Datei mit dem übergebenen Pfad wenn diese nicht schon verhanden ist.
     /// Dann wird das Objekt mit dem Pfad und den Akzeptierten Datentyp zurück gegeben.
-    pub fn build(path:String) -> Self {
+    pub fn build(path:&str) -> Self {
 
         if File::open(&path).is_err() {
             fs::File::create(&path).expect(format!("Fehler beim erstellen der Datei {:?}", &path).as_str());
         }  
 
         FileHandler{
-            path,
+            path:path.to_string(),
             input_type: std::marker::PhantomData,
         }
     }
@@ -32,7 +31,7 @@ impl <T: serde::Serialize + for<'de> serde::Deserialize<'de>> FileHandler<T> {
     pub fn read(&self) -> Result<Vec<T>, Box<dyn Error>> { 
         let data = File::open(&self.path)?;
         let reader = BufReader::new(data);
-        let content:Vec<T> = serde_json::from_reader( reader)?; 
+        let content:Vec<T> = serde_json::from_reader(reader)?; 
         Ok(content)
         }
 

@@ -17,20 +17,30 @@ pub struct TodoItem {
     priority: PriorityState,
     description:Option<String>,
     expand:bool,
-    //dependency = mache Todo können auch in mehrer aufgeteilt werden. daraus ergeben sich abhängigkeiten wenn z.B. Todo A eine blocker hat aber Todo B von A abhängt ist B auch geblockt.
+    delete:bool,
+    //dependency = manche Todo können auch in mehrer aufgeteilt werden. daraus ergeben sich abhängigkeiten wenn z.B. Todo A eine blocker hat aber Todo B von A abhängt ist B auch geblockt.
 }
 
+
 impl TodoItem {
-    pub fn new(name:String) -> Self {
-        TodoItem { name, 
-            timestamp:Utc::now(),
-            deadline:None,
-            forward:None,
-            state:false,
-            priority:PriorityState::Low,
-            description:None,
-            expand:false,
-        }
+    pub fn new(name:String, 
+                deadline:Option<chrono::DateTime<Utc>>,
+                priority: &str,
+                description:&str
+                ) -> Self {
+
+        let mut todo = TodoItem { name, 
+                                            timestamp:Utc::now(),
+                                            deadline,
+                                            forward:None,
+                                            state:false,
+                                            priority: PriorityState::Low,
+                                            description:Some(description.to_string()),
+                                            expand:false,
+                                            delete:false,
+                                            };
+        todo.set_priority_state(&priority);
+        todo
     }
 
     pub fn name(&self) -> &String {
@@ -68,6 +78,14 @@ impl TodoItem {
 
     }
 
+    pub fn delete(&self) -> bool {
+        self.delete
+    }
+ 
+    pub fn set_delete_flag(&mut self, flag:bool) {
+        self.delete = flag;
+    }
+    
     pub fn set_deadline(&mut self, time:String) {
         let fmt = "%d.%m.%y %H:%M";
         let naive: NaiveDateTime = NaiveDateTime::parse_from_str(&time, fmt).expect("");
@@ -91,11 +109,17 @@ impl TodoItem {
 
     pub fn priority(&self) -> String {
         match self.priority {
-            PriorityState::Height => "Hoch".to_string(),
-            PriorityState::Middle => "Mittel".to_string(),
-            PriorityState::Low => "Gering".to_string(),
+            PriorityState::High => "High".to_string(),
+            PriorityState::Middle => "Middle".to_string(),
+            PriorityState::Low => "Low".to_string(),
         }
     }
+
+    pub fn priority_state(&self) -> &PriorityState {
+        &self.priority
+    }
+
+
     pub fn set_description(&mut self, text:String) {
         self.description = Some(text);
     }
@@ -107,7 +131,7 @@ impl TodoItem {
     pub fn set_priority_state(&mut self, state:&str) -> &mut Self {
 
         match state.to_lowercase().as_str() {
-            "height" | "hoch" => self.priority = PriorityState::Height, 
+            "high" | "hoch" => self.priority = PriorityState::High, 
             "middle" | "mittel" => self.priority = PriorityState::Middle,
             "low" | "gering" => self.priority = PriorityState::Low,
             _ => (),

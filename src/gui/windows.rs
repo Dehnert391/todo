@@ -1,9 +1,15 @@
-use eframe::egui::{self, Vec2};
-use crate::{TodoList, gui::gui_todo_item::GuiTodoItem};
+use eframe::egui::{self, ScrollArea, Vec2, scroll_area::ScrollBarVisibility::{self, VisibleWhenNeeded}};
+use crate::{TodoList, gui::{font_config::FontConfig, gui_add_todo_item::NewItem, gui_todo_item::GuiTodoItem}};
+
+
+
 #[derive(Default)]
 pub struct MainWindow {
-    todellu:Vec<TodoList>,
+    todolist:Vec<TodoList>,
     check_item:Vec<GuiTodoItem>,
+    add_item: bool,
+    new_item: NewItem,
+    temp_len: usize,
 }
 
 impl MainWindow {
@@ -15,57 +21,122 @@ impl MainWindow {
     }
 
     fn init(&mut self) {
-        
-        self.todellu = TodoList::new();
-        //self.todellu[0].add("Todos hinzufügen implementieren.");
+
+        self.add_item = false;
+        self.new_item = NewItem::new(&mut self.add_item);
+        self.todolist = TodoList::new("./config_files/todolist.json");
         self.check_item = Vec::new();
-        for item in self.todellu[0].list() {
-            self.check_item.push(GuiTodoItem::new(*item.0, item.1));
+        for item in self.todolist[0].list() {
+            if !item.1.delete() {
+                self.check_item.push(GuiTodoItem::new(item.0, &item.1));
+            }
         }
+        self.temp_len = self.todolist[0].list().len();
     }
     
     fn comit_item(&mut self, gui:&GuiTodoItem) {
-        self.todellu[0].update_item(gui.id(), |item| {
+        self.todolist[0].update_item(gui.id(), |item| {
             item.set_expand(gui.expand());
             item.set_state(gui.done());
             item.set_description(gui.get_description());
             item.set_priority_state(&gui.priority());
-           // item.set_deadline(gui.deadline());
-        })
-
+            item.set_delete_flag(gui.delete());
+           // item.set_deadline(gui.deadline()); 
+        });
+        //self.init();
     }
 
     fn render_todo_items(&mut self, ui: &mut egui::Ui) {
-        for todo in &mut self.check_item {   
-            todo.show(ui)
+        
+        ScrollArea::vertical()
+            .auto_shrink(true)
+            .scroll_bar_visibility(VisibleWhenNeeded)
+            .show(ui, |ui| {
+
+            
+        for todo in &mut self.check_item {
+            if !todo.delete() {
+                ui.push_id(todo.id(), |ui| { todo.show(ui) });
+                ui.separator();
+            }
         }
+        });
+    }
+
+    fn synchronise_items(&mut self) {
+        for id in self.check_item.clone() {
+            let _ = &self.comit_item(&id);
+        }
+
+        self.todolist[0].order_by_state();
+        //self.todellu[0].update_list();
     }
 }
 
 
 impl eframe::App for MainWindow {
-
+    
     fn ui(&mut self, ui: &mut egui::Ui, frame: &mut  eframe::Frame) {
+        let font = FontConfig::default();
         egui::CentralPanel::default().show(ui, |ui| {
             ui.horizontal(|ui| {
-                ui.label(egui::RichText::new("My Ugly TODO-List").size(24.0).strong());
-                let add_button = ui.add(egui::Button::new(egui::RichText::new("+").size(20.0).strong()).min_size(Vec2{x:25.0, y:25.0}));
+                ui.label(egui::RichText::new("My Tiny TODO-List").size(font.heading_size()).strong());
+
+                let add_button = ui.add(egui::Button::new(egui::RichText::new("+")
+                                                                                        .size(font.button_font_size())
+                                                                                        .strong())
+                                                                                        .min_size(Vec2{x:25.0, y:25.0}));
+
                 if add_button.clicked() {
-
-                    self.todellu[0].add("Neuer Eintrag.");
-
-                    println!("{:?}", self.todellu);
+                    self.add_item = !self.add_item;
+                    self.new_item = NewItem::new(&mut self.add_item);
                     
-                    self.check_item = Vec::new();
-                    for item in self.todellu[0].list() {
-                        self.check_item.push(GuiTodoItem::new(*item.0, item.1));
+                }
+                if self.add_item {
+                    self.new_item.show(ui);
+                    if self.new_item.created() {
+
+                        let (id, item) = self.todolist[0].add(&self.new_item.name(), 
+                                                                            None,
+                                                                            self.new_item.priority(),
+                                                                            self.new_item.description() 
+                                                                            );      
+                        self.check_item.push(GuiTodoItem::new(id, &item));
+                        self.todolist[0].order_by_prio();
+                        self.synchronise_items();
+                        self.todolist[0].update_list();
+                        self.init();
+
+                        //self.new_item = NewItem::default();
+                        self.add_item = false;
+                        
                     }
-                    self.render_todo_items(ui);
+                    self.add_item = self.new_item.visible();
+                }
+
+            let sort_button = ui.add(egui::Button::new(egui::RichText::new("Sort")
+                                                                                                .size(font.button_font_size()).strong())
+                                                                                                .min_size(Vec2{x:25.0, y:25.0}));
+                if sort_button.clicked() {
+                    self.todolist[0].order_by_prio();
+                    self.synchronise_items();
+                    self.todolist[0].update_list();
+                    self.init();
                 }
             });
 
+            ui.separator();
+
+            
+
             self.render_todo_items(ui);
+
+            if self.todolist[0].list().len() != self.temp_len {
+                self.synchronise_items();
+                self.init();
+            }
         });
+        
     }
 
     fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
@@ -73,20 +144,15 @@ impl eframe::App for MainWindow {
     }
     
     fn save(&mut self, _storage: &mut dyn eframe::Storage) {
-        for id in self.check_item.clone() {
-            let _ = &self.comit_item(&id);
-        }
-        println!("Save");
     }
     
     fn on_exit(&mut self) {
-        for id in self.check_item.clone() {
-            let _ = &self.comit_item(&id);
-        }
+        self.synchronise_items();
     }
     
     fn auto_save_interval(&self) -> std::time::Duration {
         std::time::Duration::from_secs(30)
+        
     }
     
     fn clear_color(&self, _visuals: &egui::Visuals) -> [f32; 4] {
@@ -103,4 +169,4 @@ impl eframe::App for MainWindow {
     }
     
     fn raw_input_hook(&mut self, _ctx: &egui::Context, _raw_input: &mut egui::RawInput) {}
-}
+} 
