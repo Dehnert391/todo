@@ -1,5 +1,5 @@
 use eframe::{egui::{self, Color32 }};
-use crate::gui::font_config::{self, FontConfig};
+use crate::gui::font_config::{FontConfig};
 
 use crate::core::todoitem::TodoItem;
 #[derive(Clone)]

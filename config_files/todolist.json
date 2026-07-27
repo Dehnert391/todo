@@ -1,12 +1,12 @@
 [
   {
-    "id": 29,
+    "id": 12,
     "list": [
       [
-        28,
+        9,
         {
-          "name": "crebtrehttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
-          "timestamp": "2026-07-26T10:58:43.513942415Z",
+          "name": "Die To-Dos in dieser Liste geben einen kurzen Überblick zur Funktionsweise.",
+          "timestamp": "2026-07-27T05:48:08.831916545Z",
           "deadline": null,
           "forward": null,
           "state": false,
@@ -17,10 +17,38 @@
         }
       ],
       [
-        26,
+        2,
         {
-          "name": "rgvtvptolp",
-          "timestamp": "2026-07-26T10:39:51.157793632Z",
+          "name": "Klicke auf die Punkt ->",
+          "timestamp": "2026-07-27T05:33:49.878030969Z",
+          "deadline": null,
+          "forward": null,
+          "state": false,
+          "priority": "High",
+          "description": "Hier können weitere Notizen zum To-Do angelegt werden.",
+          "expand": false,
+          "delete": false
+        }
+      ],
+      [
+        11,
+        {
+          "name": "Mit dem „+“ Button im oberen bereich lassen sich neue To-Dos anlegen",
+          "timestamp": "2026-07-27T06:01:15.765961014Z",
+          "deadline": null,
+          "forward": null,
+          "state": false,
+          "priority": "High",
+          "description": "",
+          "expand": false,
+          "delete": false
+        }
+      ],
+      [
+        10,
+        {
+          "name": "Der Button „Sort“ sortiert die To-Dos nach Priorität. Abgehakte To-Dos werden anschließend nach unten verschoben.",
+          "timestamp": "2026-07-27T06:00:28.142699920Z",
           "deadline": null,
           "forward": null,
           "state": false,
@@ -31,24 +59,10 @@
         }
       ],
       [
-        29,
+        12,
         {
-          "name": "freggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
-          "timestamp": "2026-07-26T10:59:00.952695986Z",
-          "deadline": null,
-          "forward": null,
-          "state": false,
-          "priority": "Middle",
-          "description": "",
-          "expand": false,
-          "delete": false
-        }
-      ],
-      [
-        23,
-        {
-          "name": "1",
-          "timestamp": "2026-07-26T08:47:40.323355892Z",
+          "name": "Mit dem Button „X“ neben den To-Dos wird das To-Do endgültig gelöscht.",
+          "timestamp": "2026-07-27T06:03:35.183942565Z",
           "deadline": null,
           "forward": null,
           "state": false,

@@ -1,4 +1,4 @@
-use eframe::egui::{self, ScrollArea, Vec2, scroll_area::ScrollBarVisibility::{self, VisibleWhenNeeded}};
+use eframe::egui::{self, ScrollArea, Vec2, scroll_area::ScrollBarVisibility::{VisibleWhenNeeded}};
 use crate::{TodoList, gui::{font_config::FontConfig, gui_add_todo_item::NewItem, gui_todo_item::GuiTodoItem}};
 
 
@@ -13,7 +13,7 @@ pub struct MainWindow {
 }
 
 impl MainWindow {
-    pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
+    pub fn new(_ : &eframe::CreationContext<'_>) -> Self {
         
         let mut s = Self::default();
         s.init();
@@ -69,18 +69,17 @@ impl MainWindow {
         }
 
         self.todolist[0].order_by_state();
-        //self.todellu[0].update_list();
     }
 }
 
 
 impl eframe::App for MainWindow {
     
-    fn ui(&mut self, ui: &mut egui::Ui, frame: &mut  eframe::Frame) {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut  eframe::Frame) {
         let font = FontConfig::default();
         egui::CentralPanel::default().show(ui, |ui| {
             ui.horizontal(|ui| {
-                ui.label(egui::RichText::new("My Tiny TODO-List").size(font.heading_size()).strong());
+                ui.label(egui::RichText::new("My Tiny To-Do List").size(font.heading_size()).strong());
 
                 let add_button = ui.add(egui::Button::new(egui::RichText::new("+")
                                                                                         .size(font.button_font_size())
