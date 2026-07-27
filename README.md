@@ -1,6 +1,6 @@
-#To-Do List
+To-Do List
 
-###Inbetriebnahme der App
+Inbetriebnahme der App
 
 1. Lade das passende Release-Paket herunter (Windows oder Linux).
 2. Entpacke das Paket in einen Ordner deiner Wahl.
