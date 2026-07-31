@@ -120,7 +120,8 @@ impl GuiTodoItem {
             //ui.label(egui::RichText::new(format!("{} Deadline", &self.deadline)).size(font.font_size()).text_style(egui::TextStyle::Monospace));
             
             let delete_img = egui::include_image!("../../config_files/icons/delete_button.svg");
-            let delete_button = ui.add(egui::Button::new(egui::Image::new(delete_img)));  
+            let delete_button = ui.add(egui::Button::new(egui::Image::new(delete_img))
+                                                                        .fill(egui::Color32::from_rgb(56, 58, 59)));  
 
             if delete_button.hovered() {
                 let id = ui.make_persistent_id("delete_button");

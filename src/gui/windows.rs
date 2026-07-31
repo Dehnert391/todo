@@ -1,4 +1,4 @@
-use eframe::egui::{self, LayerId, Popup, PopupCloseBehavior, ScrollArea, Vec2, include_image, scroll_area::ScrollBarVisibility::VisibleWhenNeeded};
+use eframe::egui::{self, Color32, LayerId, Popup, ScrollArea, Vec2, include_image, scroll_area::ScrollBarVisibility::VisibleWhenNeeded};
 use crate::{TodoList, gui::{font_config::FontConfig, gui_add_todo_item::NewItem, gui_todo_item::GuiTodoItem, window_config::WindowConfig}};
 
 
@@ -92,7 +92,8 @@ impl eframe::App for MainWindow {
                                     .strong())
                                     .min_size(Vec2{x:25.0, y:25.0}));*/
                 let add_img = egui::include_image!("../../config_files/icons/add_task.svg");
-                let add_button = ui.add(egui::Button::new(egui::Image::new(add_img)));
+                let add_button = ui.add(egui::Button::new(egui::Image::new(add_img))
+                                                                            .fill(egui::Color32::from_rgb(56, 58, 59)));
                 
                 if add_button.hovered() {
                     let id = ui.make_persistent_id("add_button");
@@ -131,7 +132,8 @@ impl eframe::App for MainWindow {
 
             let sort_img = egui::include_image!("../../config_files/icons/sort_button.svg");
             
-            let sort_button = ui.add(egui::Button::new(egui::Image::new(sort_img)));     
+            let sort_button = ui.add(egui::Button::new(egui::Image::new(sort_img))
+                                                                    .fill(egui::Color32::from_rgb(56, 58, 59)));     
                 
                 if sort_button.hovered() {
                     let id = ui.make_persistent_id("sort_button");
