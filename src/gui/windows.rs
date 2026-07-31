@@ -1,5 +1,5 @@
-use eframe::egui::{self, ScrollArea, Vec2, scroll_area::ScrollBarVisibility::{VisibleWhenNeeded}};
-use crate::{TodoList, gui::{font_config::FontConfig, gui_add_todo_item::NewItem, gui_todo_item::GuiTodoItem}};
+use eframe::egui::{self, LayerId, Popup, PopupCloseBehavior, ScrollArea, Vec2, include_image, scroll_area::ScrollBarVisibility::VisibleWhenNeeded};
+use crate::{TodoList, gui::{font_config::FontConfig, gui_add_todo_item::NewItem, gui_todo_item::GuiTodoItem, window_config::WindowConfig}};
 
 
 
@@ -10,6 +10,8 @@ pub struct MainWindow {
     add_item: bool,
     new_item: NewItem,
     temp_len: usize,
+    windows_position:(f32, f32),
+    windows_size:(f32, f32),
 }
 
 impl MainWindow {
@@ -56,7 +58,7 @@ impl MainWindow {
             
         for todo in &mut self.check_item {
             if !todo.delete() {
-                ui.push_id(todo.id(), |ui| { todo.show(ui) });
+                ui.push_id(todo.id(), |ui| { todo.show(ui)});
                 ui.separator();
             }
         }
@@ -75,22 +77,36 @@ impl MainWindow {
 
 impl eframe::App for MainWindow {
     
-    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut  eframe::Frame) {
+    fn ui(&mut self, ui: &mut egui::Ui, frame: &mut  eframe::Frame) {
         let font = FontConfig::default();
+
+        self.windows_size = (ui.response().rect.width(), ui.response().rect.height());
+        //let img = egui::include_image!("23044843_6721707.svg");
+        //ui.add(egui::Image::new(img.clone()));
         egui::CentralPanel::default().show(ui, |ui| {
             ui.horizontal(|ui| {
                 ui.label(egui::RichText::new("My Tiny To-Do List").size(font.heading_size()).strong());
 
-                let add_button = ui.add(egui::Button::new(egui::RichText::new("+")
-                                                                                        .size(font.button_font_size())
-                                                                                        .strong())
-                                                                                        .min_size(Vec2{x:25.0, y:25.0}));
+               /*  let add_button = ui.add(egui::Button::new(egui::RichText::new("+")
+                                    .size(font.button_font_size())
+                                    .strong())
+                                    .min_size(Vec2{x:25.0, y:25.0}));*/
+                let add_img = egui::include_image!("../../config_files/icons/add_task.svg");
+                let add_button = ui.add(egui::Button::new(egui::Image::new(add_img)));
+                
+                if add_button.hovered() {
+                    let id = ui.make_persistent_id("add_button");
+                    Popup::new( id, ui.ctx().clone(), &add_button, LayerId::new(egui::Order::Tooltip, id))
+                                            .show(|ui| {
+                                                ui.label("Create new Task.");
+                                            });
+                                        }           
 
                 if add_button.clicked() {
                     self.add_item = !self.add_item;
                     self.new_item = NewItem::new(&mut self.add_item);
-                    
                 }
+                
                 if self.add_item {
                     self.new_item.show(ui);
                     if self.new_item.created() {
@@ -113,9 +129,18 @@ impl eframe::App for MainWindow {
                     self.add_item = self.new_item.visible();
                 }
 
-            let sort_button = ui.add(egui::Button::new(egui::RichText::new("Sort")
-                                                                                                .size(font.button_font_size()).strong())
-                                                                                                .min_size(Vec2{x:25.0, y:25.0}));
+            let sort_img = egui::include_image!("../../config_files/icons/sort_button.svg");
+            
+            let sort_button = ui.add(egui::Button::new(egui::Image::new(sort_img)));     
+                
+                if sort_button.hovered() {
+                    let id = ui.make_persistent_id("sort_button");
+                    Popup::new( id, ui.ctx().clone(), &sort_button, LayerId::new(egui::Order::Tooltip, id))
+                                            .show(|ui| {
+                                                ui.label("Order Tasks by Prio.");
+                                            });
+                }    
+
                 if sort_button.clicked() {
                     self.todolist[0].order_by_prio();
                     self.synchronise_items();
@@ -124,9 +149,8 @@ impl eframe::App for MainWindow {
                 }
             });
 
-            ui.separator();
 
-            
+            ui.separator();
 
             self.render_todo_items(ui);
 
@@ -147,6 +171,7 @@ impl eframe::App for MainWindow {
     
     fn on_exit(&mut self) {
         self.synchronise_items();
+        WindowConfig::new().set_size(self.windows_size);
     }
     
     fn auto_save_interval(&self) -> std::time::Duration {

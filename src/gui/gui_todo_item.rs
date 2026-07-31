@@ -1,4 +1,4 @@
-use eframe::{egui::{self, Color32 }};
+use eframe::egui::{self, Color32, LayerId, Popup };
 use crate::gui::font_config::{FontConfig};
 
 use crate::core::todoitem::TodoItem;
@@ -75,8 +75,8 @@ impl GuiTodoItem {
 
             ui.checkbox(&mut self.done, "");
 
-                let screen_width = ui.available_width();   
-                let label_width = screen_width-160.0;  
+            let screen_width = ui.available_width();   
+            let label_width = screen_width-160.0;  
            
 
             let font = FontConfig::default();
@@ -93,19 +93,17 @@ impl GuiTodoItem {
                                             .text_style(egui::TextStyle::Monospace)
                                 };
 
-            ui.with_layout(egui::Layout::top_down(egui::Align::Min), |ui| {
-                ui.add_sized([label_width, ui.available_height()],
-                    egui::Label::new(text)
-                                .wrap_mode(egui::TextWrapMode::Wrap)
-                );
-            });
+            ui.add_sized([label_width, ui.available_height()],
+                egui::Label::new(text)
+                            .wrap_mode(egui::TextWrapMode::Wrap)
+            );
 
 
             state.show_toggle_button(ui, Self::toggle_icon_circle);
         
             ui.horizontal(|ui| {
            
-            ui.push_id(self.id, |ui| { 
+            ui.push_id(id, |ui| { 
                 egui::ComboBox::from_label(format!("Prio"))
                             .selected_text(format!("{}", selected.clone()))
                             .width(66.0)
@@ -115,12 +113,22 @@ impl GuiTodoItem {
                                 ui.selectable_value(&mut selected, "Low".to_owned(), "Low");
                             });
             });
+            
 
             self.priority = selected;
        
-            //ui.label(egui::RichText::new(format!("{} Deadline", &self.deadline)).size(font.font_size()).text_style(egui::TextStyle::Monospace));  
-            let delete_button = ui.add(egui::Button::new(egui::RichText::new("x").size(font.button_font_size()).strong()));  
+            //ui.label(egui::RichText::new(format!("{} Deadline", &self.deadline)).size(font.font_size()).text_style(egui::TextStyle::Monospace));
+            
+            let delete_img = egui::include_image!("../../config_files/icons/delete_button.svg");
+            let delete_button = ui.add(egui::Button::new(egui::Image::new(delete_img)));  
 
+            if delete_button.hovered() {
+                let id = ui.make_persistent_id("delete_button");
+                Popup::new(id, ui.ctx().clone(), &delete_button, LayerId::new(egui::Order::Tooltip, id))
+                                            .show(|ui| {
+                                                ui.label("Delete Task.");
+                                            });
+                                        }      
             if delete_button.clicked() {
                 self.delete = true;
             }

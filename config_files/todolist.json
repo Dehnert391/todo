@@ -1,6 +1,6 @@
 [
   {
-    "id": 12,
+    "id": 14,
     "list": [
       [
         9,
@@ -17,15 +17,15 @@
         }
       ],
       [
-        2,
+        14,
         {
-          "name": "Klicke auf die Punkt ->",
-          "timestamp": "2026-07-27T05:33:49.878030969Z",
+          "name": "Klicke auf den Punkt ->",
+          "timestamp": "2026-07-30T23:58:36.065252032Z",
           "deadline": null,
           "forward": null,
           "state": false,
           "priority": "High",
-          "description": "Hier können weitere Notizen zum To-Do angelegt werden.",
+          "description": "",
           "expand": false,
           "delete": false
         }
@@ -38,7 +38,7 @@
           "deadline": null,
           "forward": null,
           "state": false,
-          "priority": "High",
+          "priority": "Middle",
           "description": "",
           "expand": false,
           "delete": false

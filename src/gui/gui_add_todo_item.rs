@@ -62,7 +62,7 @@ impl NewItem {
         let ctx= ui.ctx();
         egui::Window::new("Add new Todo.")
             .collapsible(false)
-            .resizable(false)
+            .movable(true)
             .show(ctx, |ui| {
                     ui.set_min_width(310.0);
                     ui.vertical(|ui| {
@@ -85,20 +85,21 @@ impl NewItem {
                             });
                             });
                         });
+
                         /* 
                         ui.horizontal(|ui|{
+                            let mut radio_state = false;
                             ui.label(egui::RichText::new("Deadline").size(font.font_size()).strong().text_style(egui::TextStyle::Monospace));
+                            ui.radio_value(&mut radio_state, _, "YES");
                             ui.add(egui_extras::DatePickerButton::new(&mut self.deadline));
-                            
-                            ui.radio_value(&mut "None", "None", "None");
-                        });
-                        */
+                        
+                        });*/
+                        
 
                         ui.vertical(|ui| {
 
                         ui.label(egui::RichText::new("Description").size(font.font_size()).strong().text_style(egui::TextStyle::Monospace));
                         ui.horizontal(|ui|{
-
                             ui.add(
                                 egui::TextEdit::multiline(&mut self.description)
                                                 .desired_width(ui.available_width())
@@ -108,8 +109,8 @@ impl NewItem {
                         });
 
                         ui.horizontal(|ui|{
-                        let create_button = ui.button("Create");
-                        if create_button.clicked() {
+        
+                        if ui.button("Create").clicked() {
                             if self.name().len() == 0 {
                                 println!("Es wurde kein Text eingegeben.");
                             }else {
@@ -117,14 +118,10 @@ impl NewItem {
                                 self.created = true;
                             }
                         }
-                        let cancel_button = ui.button("Cancel");
-                        if cancel_button.clicked() {
+                        if ui.button("Cancel").clicked() {
                             self.visible = !self.visible;
                         }
-
                     });
-
-
                 });
             });
     }
