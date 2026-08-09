@@ -15,6 +15,6 @@ fn main() {
     native_options.viewport = egui::ViewportBuilder::default().with_inner_size(cfg.size());
 
     let _ = eframe::run_native("", native_options, Box::new(|cc| {
-                                                                                                                egui_extras::install_image_loaders(&cc.egui_ctx); 
-                                                                                                                Ok(Box::new(MainWindow::new(cc)))}));
-} 
+                                                egui_extras::install_image_loaders(&cc.egui_ctx); 
+                                                Ok(Box::new(MainWindow::new(cc)))}));
+}
