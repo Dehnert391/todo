@@ -1,15 +1,15 @@
 [
   {
-    "id": 14,
+    "id": 4,
     "list": [
       [
-        9,
+        4,
         {
-          "name": "Die To-Dos in dieser Liste geben einen kurzen Überblick zur Funktionsweise.",
-          "timestamp": "2026-07-27T05:48:08.831916545Z",
+          "name": "vwevrw",
+          "timestamp": "2026-10-25T18:59:13.342205665Z",
           "deadline": null,
           "forward": null,
-          "state": false,
+          "state": "Open",
           "priority": "High",
           "description": "",
           "expand": false,
@@ -17,56 +17,14 @@
         }
       ],
       [
-        14,
+        3,
         {
-          "name": "Klicke auf den Punkt ->",
-          "timestamp": "2026-07-30T23:58:36.065252032Z",
+          "name": "Buttonlayout  anpassen und dann auf Github Pushen",
+          "timestamp": "2026-10-25T17:43:14.288144726Z",
           "deadline": null,
           "forward": null,
-          "state": false,
+          "state": "Open",
           "priority": "High",
-          "description": "",
-          "expand": false,
-          "delete": false
-        }
-      ],
-      [
-        11,
-        {
-          "name": "Mit dem „+“ Button im oberen bereich lassen sich neue To-Dos anlegen",
-          "timestamp": "2026-07-27T06:01:15.765961014Z",
-          "deadline": null,
-          "forward": null,
-          "state": false,
-          "priority": "Middle",
-          "description": "",
-          "expand": false,
-          "delete": false
-        }
-      ],
-      [
-        10,
-        {
-          "name": "Der Button „Sort“ sortiert die To-Dos nach Priorität. Abgehakte To-Dos werden anschließend nach unten verschoben.",
-          "timestamp": "2026-07-27T06:00:28.142699920Z",
-          "deadline": null,
-          "forward": null,
-          "state": false,
-          "priority": "Middle",
-          "description": "",
-          "expand": false,
-          "delete": false
-        }
-      ],
-      [
-        12,
-        {
-          "name": "Mit dem Button „X“ neben den To-Dos wird das To-Do endgültig gelöscht.",
-          "timestamp": "2026-07-27T06:03:35.183942565Z",
-          "deadline": null,
-          "forward": null,
-          "state": false,
-          "priority": "Low",
           "description": "",
           "expand": false,
           "delete": false
