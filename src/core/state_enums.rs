@@ -9,10 +9,10 @@ pub enum PriorityState {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub enum TodoState {
-    Open,
     Running,
-    Close,
+    Open,
     Blocked,
+    Close,
 }
 
 impl TodoState {
